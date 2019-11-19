@@ -1,6 +1,6 @@
 {
   "name": "clizer",
-  "version": "0.0.0-dev.6",
+  "version": "0.0.0-dev.7",
   "description": "CLI tool analyzer",
   "main": "dist/index.js",
   "repository": "https://github.com/mike-north/clizer",

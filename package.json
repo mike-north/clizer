@@ -1,6 +1,6 @@
 {
   "name": "clizer",
-  "version": "0.0.0-dev.3",
+  "version": "0.0.0-dev.4",
   "description": "CLI tool analyzer",
   "main": "dist/index.js",
   "repository": "https://github.com/mike-north/clizer",
@@ -22,6 +22,7 @@
   ],
   "devDependencies": {
     "@types/commander": "^2.12.2",
+    "@types/left-pad": "^1.2.0",
     "@types/node": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",

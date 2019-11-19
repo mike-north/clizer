@@ -2,7 +2,7 @@ import * as commander from 'commander';
 import { ReadStream } from 'tty';
 import { createWriteStream } from 'fs';
 import * as chalk from 'chalk';
-
+import * as leftpad from 'left-pad';
 export const pipedData: [string, string, string][] = [];
 
 const program = commander;
@@ -18,12 +18,12 @@ const fsWriteStream = createWriteStream('clizer.log', {
 });
 
 function formatDelta(amt: number): string {
-  const s = `$({+${amt} ms)}`;
+  const s = `(+${leftpad('' + amt.toFixed(2), 8)} ms)`;
   if (amt < 500) {
-    return s;
+    return chalk.dim(s);
   }
-  if (amt < 3000) return chalk.yellow(s);
-  return chalk.red(s);
+  if (amt < 3000) return chalk.bgYellow.black(s);
+  return chalk.bgRed.white(s);
 }
 
 const beginTime = process.hrtime();
@@ -33,7 +33,7 @@ if (!process.stdin.isTTY) {
     const chunk = this.read();
     if (chunk !== null) {
       const time = process.hrtime(beginTime);
-      const dt = ms(time) - ms(lastTime);
+      const dt = Math.max(ms(time) - ms(lastTime), 0);
       lastTime = time;
       const line = [ms(time).toFixed(2), dt.toFixed(2), chunk] as [
         string,
@@ -42,14 +42,18 @@ if (!process.stdin.isTTY) {
       ];
       pipedData.push(line);
       process.stdout.write(
-        `${chalk.dim(`[${line[0]} ms]`)} ${formatDelta(dt)}:\t${line[2]}`
+        `${chalk.dim(`[${leftpad('' + line[0], 10)} ms]`)} ${formatDelta(
+          dt
+        )}\t|\t${line[2]}`
       );
       fsWriteStream.write(line.join(','));
     }
   });
   process.stdin.on('end', function() {
     program.parse(process.argv);
-    console.log(pipedData.map(line => line.join(',')).join('\n'));
+  });
+  process.on('exit', function() {
+    fsWriteStream.close();
   });
 } else {
   program.parse(process.argv);

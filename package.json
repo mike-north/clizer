@@ -1,6 +1,6 @@
 {
   "name": "clizer",
-  "version": "0.0.0-dev.0",
+  "version": "0.0.0-dev.1",
   "description": "CLI tool analyzer",
   "main": "dist/index.js",
   "repository": "https://github.com/mike-north/clizer",
@@ -12,8 +12,13 @@
   },
   "scripts": {
     "build": "yarn tsc -p .",
-    "lint": "yarn eslint --ext ts,js ."
+    "lint": "yarn eslint --ext ts,js .",
+    "prepublish": "yarn lint && yarn build"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "devDependencies": {
     "@types/commander": "^2.12.2",
     "@types/node": "^10.0.0",

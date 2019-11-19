@@ -19,12 +19,14 @@ const fsWriteStream = createWriteStream('clizer.log', {
 });
 
 function formatDelta(amt: number): string {
-  const s = `(+${leftpad('' + amt.toFixed(2), 8)} ms)`;
+  const s = `(+${leftpad('' + amt.toFixed(2), 10)} ms)`;
   if (amt < 500) {
-    return chalk.dim(s);
+    return chalk.green(s);
   }
-  if (amt < 3000) return chalk.bgYellow.black(s);
-  return chalk.bgRed.white(s);
+  if (amt < 2000) return chalk.bgYellow.black(s);
+  if (amt < 4000) return chalk.bgYellowBright.black(s);
+  if (amt < 8000) return chalk.bgRed.black(s);
+  return chalk.bgRedBright.white(s);
 }
 
 const beginTime = process.hrtime();

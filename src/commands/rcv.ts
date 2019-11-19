@@ -1,7 +1,7 @@
 import * as commander from 'commander';
 import { ReadStream } from 'tty';
 import { createWriteStream } from 'fs';
-import chalk from 'chalk';
+import * as chalk from 'chalk';
 
 export const pipedData: [string, string, string][] = [];
 

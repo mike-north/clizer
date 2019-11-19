@@ -1,6 +1,6 @@
 {
   "name": "clizer",
-  "version": "0.0.0-dev.1",
+  "version": "0.0.0-dev.2",
   "description": "CLI tool analyzer",
   "main": "dist/index.js",
   "repository": "https://github.com/mike-north/clizer",
@@ -13,7 +13,8 @@
   "scripts": {
     "build": "yarn tsc -p .",
     "lint": "yarn eslint --ext ts,js .",
-    "prepublish": "yarn lint && yarn build"
+    "clean": "yarn rimraf dist",
+    "prepublish": "yarn lint && yarn clean && yarn build"
   },
   "files": [
     "bin",
@@ -29,6 +30,7 @@
     "eslint-config-prettier": "^6.6.0",
     "eslint-plugin-prettier": "^3.1.1",
     "prettier": "^1.19.1",
+    "rimraf": "^3.0.0",
     "typescript": "^3.7.2"
   },
   "dependencies": {

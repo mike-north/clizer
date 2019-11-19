@@ -25,7 +25,7 @@ function formatDelta(amt: number): string {
   }
   if (amt < 2000) return chalk.bgYellow.black(s);
   if (amt < 4000) return chalk.bgYellowBright.black(s);
-  if (amt < 8000) return chalk.bgRed.black(s);
+  if (amt < 8000) return chalk.bgRed.dim(s);
   return chalk.bgRedBright.white(s);
 }
 

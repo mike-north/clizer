@@ -3,6 +3,7 @@ import { ReadStream } from 'tty';
 import { createWriteStream } from 'fs';
 import * as chalk from 'chalk';
 import * as leftpad from 'left-pad';
+
 export const pipedData: [string, string, string][] = [];
 
 const program = commander;
@@ -27,6 +28,7 @@ function formatDelta(amt: number): string {
 }
 
 const beginTime = process.hrtime();
+
 if (!process.stdin.isTTY) {
   let lastTime = beginTime;
   process.stdin.on('readable', function(this: ReadStream) {
@@ -35,17 +37,20 @@ if (!process.stdin.isTTY) {
       const time = process.hrtime(beginTime);
       const dt = Math.max(ms(time) - ms(lastTime), 0);
       lastTime = time;
-      const line = [ms(time).toFixed(2), dt.toFixed(2), chunk] as [
+      const timeInMs = ms(time);
+      const line = [timeInMs.toFixed(2), dt.toFixed(2), chunk] as [
         string,
         string,
         string
       ];
       pipedData.push(line);
-      process.stdout.write(
-        `${chalk.dim(`[${leftpad('' + line[0], 10)} ms]`)} ${formatDelta(
-          dt
-        )}\t|\t${line[2]}`
-      );
+      ('' + chunk).split('\n').forEach(l => {
+        process.stdout.write(
+          `${chalk.dim(`[${leftpad('' + line[0], 10)} ms]`)} ${formatDelta(
+            dt
+          )}\t${l}\n`
+        );
+      });
       fsWriteStream.write(line.join(','));
     }
   });
